@@ -53,5 +53,8 @@ else
 
 fi	
 
+# Current Volume
+volume=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $2 }')
+
 # Statusbar print
-echo │ $my_ip $wifi_ssid $wifi_symbol │ $bat_emoji$bat_percent% │ $date_formatted │
+echo │ $my_ip $wifi_ssid $wifi_symbol │ 🔉 $volume │ $bat_emoji$bat_percent% │ $date_formatted │
