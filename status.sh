@@ -53,8 +53,20 @@ else
 
 fi	
 
-# Current Volume
-volume=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $2 }')
+# Current volume
+vol_perc=$(amixer sget Master | grep 'Right:' | awk -F'[]['%']' '{ print $2 }')
+
+# Master sink status
+sink_stat=$(amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $4 }')
+
+# Sound emoji
+if [ $vol_perc -eq '0' -o $sink_stat == "off" ]
+then
+	vol_emoji="🔇"
+
+else
+	vol_emoji="🔉"
+fi
 
 # Statusbar print
-echo │ $my_ip $wifi_ssid $wifi_symbol │ 🔉 $volume │ $bat_emoji$bat_percent% │ $date_formatted │
+echo │ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji $vol_perc% │ $bat_emoji$bat_percent% │ $date_formatted │
