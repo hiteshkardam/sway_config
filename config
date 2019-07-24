@@ -224,7 +224,7 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     # Keep in mind that the current directory of this config file is $HOME
-    status_command while ~/.config/sway/status.sh; do sleep 1; done 
+    status_command while ~/.config/sway/status.sh; do sleep 0.1; done 
 
     colors {
         # Text color of status bar
