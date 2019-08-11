@@ -8,19 +8,8 @@ date_formatted=$(date +'%d-%m-%Y %l:%M:%S %p')
 # Returns battery percent.
 bat_percent=$(cat /sys/class/power_supply/BAT0/capacity)
 
-# Low battery flasher
-time_seconds=$(date +'%S')
-if [ $bat_percent -ge 15 ]
-then
-	if [ $((time_seconds%2)) -eq 0 ]
-		then
-			bat_percent="<span fgcolor='yellow' size='x-large'>$bat_percent%</span>"
-		else
-			bat_percent="<span fgcolor='red' size='x-large'>$bat_percent%</span>"
-	fi
-else
-	bat_percent="$bat_percent%"
-fi
+# Returns battery percent with color and percent symbol.
+bat_percentc="$bat_percent%"
 
 # Returns 1 if charger connected and if disconnected.
 chrgr_status=$(cat /sys/class/power_supply/ADP1/online)
@@ -82,5 +71,19 @@ else
 	vol_emoji="🔉"
 fi
 
-# Statusbar print
-echo "│ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji$vol_perc% │ $bat_emoji$bat_percent │ $date_formatted │"
+# Low battery flasher and statusbar print.
+if [ $bat_percent -le 20 -a $bat_percent -gt 10 ]
+then
+	bat_percentc="<span fgcolor='yellow' size='x-large'>$bat_percent%</span>"
+	echo "│ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji$vol_perc% │ $bat_emoji$bat_percentc │ $date_formatted │"
+
+elif [ $bat_percent -le 10 -a $bat_percent -gt 1 ]
+then
+	bat_percentc="<span fgcolor='yellow' size='x-large'>$bat_percent%</span>"
+	echo "│ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji$vol_perc% │ $bat_emoji$bat_percentc │ $date_formatted │"
+	sleep 0.5
+	bat_percentc="<span fgcolor='red' size='x-large'>$bat_percent%</span>"
+	echo "│ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji$vol_perc% │ $bat_emoji$bat_percentc │ $date_formatted │"
+else
+	echo "│ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji$vol_perc% │ $bat_emoji$bat_percentc │ $date_formatted │"
+fi
