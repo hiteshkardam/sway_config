@@ -7,7 +7,7 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
-set $mod Mod4
+set $mod Mod1
 # Home row direction keys, like vim
 set $left h
 set $down j
@@ -44,6 +44,10 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
+exec swayidle -w \
+		timeout 0 'swaylock -f -c 000000 --ring-color white && swaymsg "output * dpms off"' \
+		resume 'swaymsg "output * dpms on"'
+
 ### Input configuration
 #
 # Example configuration:
@@ -62,7 +66,7 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
        dwt enabled
        tap enabled
        natural_scroll enabled
-       middle_emulation enabled
+       accel_profile flat
    }
 
 ### Key bindings
@@ -243,5 +247,5 @@ bindsym XF86AudioMute exec pactl set-sink-mute 0 toggle # mute unmute sink
 bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
 bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
 bindsym Print exec grim $(xdg-user-dir PICTURES)/$(date +'%Y-%m-%d-%H%M%S_grim.png') && grim - | wl-copy
-
+bindsym $mod+shift+s exec sleep 0.2 && killall -SIGUSR1 swayidle
 include /etc/sway/config.d/*

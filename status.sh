@@ -14,7 +14,7 @@ chrgr_status=$(cat /sys/class/power_supply/ADP1/online)
 # Check if charger disconnected and use apt emoji.
 if [ $chrgr_status -eq "0" ]
 then
-	bat_emoji="🔋 "
+	bat_emoji="🔋"
 else
 	bat_emoji="⚡"
 fi
@@ -69,4 +69,4 @@ else
 fi
 
 # Statusbar print
-echo │ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji $vol_perc% │ $bat_emoji$bat_percent% │ $date_formatted │
+echo │ $my_ip $wifi_ssid $wifi_symbol │ $vol_emoji$vol_perc% │ $bat_emoji$bat_percent% │ $date_formatted │
